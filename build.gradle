@@ -10,6 +10,7 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/libs-milestone' }
 }
 
 dependencies {
@@ -24,10 +25,22 @@ dependencies {
     }
     testImplementation 'io.projectreactor:reactor-test'
 
+    // AWS S3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws'
+
     /* swagger */
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 }
+
+
+// AWS S3 때메 추가함
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-aws:2.2.1.RELEASE'
+    }
+}
+
 
 test {
     useJUnitPlatform()
