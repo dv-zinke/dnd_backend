@@ -44,14 +44,16 @@ public class S3Service {
                 .build();
     }
 
-    public String upload(String filename, InputStream inputStream) throws IOException {
+    String uploadContent(String filename, InputStream inputStream) throws IOException {
         ObjectMetadata objMeta = new ObjectMetadata();
         byte[] bytes = IOUtils.toByteArray(inputStream);
         objMeta.setContentLength(bytes.length);
-
         ByteArrayInputStream byteArrayIs = new ByteArrayInputStream(bytes);
-        s3Client.putObject(new PutObjectRequest(bucket, "content/"+filename, byteArrayIs, objMeta)
+
+        String key = "content/"+filename;
+
+        s3Client.putObject(new PutObjectRequest(bucket, key, byteArrayIs, objMeta)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
-        return s3Client.getUrl(bucket, filename).toString();
+        return s3Client.getUrl(bucket, key).toString();
     }
 }
