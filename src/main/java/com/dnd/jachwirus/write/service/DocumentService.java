@@ -1,6 +1,7 @@
 package com.dnd.jachwirus.write.service;
 
 import com.dnd.jachwirus.write.domain.Document;
+import com.dnd.jachwirus.write.domain.DocumentVersion;
 import com.dnd.jachwirus.write.domain.data.CreateDocumentParam;
 import com.dnd.jachwirus.write.repository.DocumentRepository;
 import com.dnd.jachwirus.write.utils.UuidUtil;
@@ -13,6 +14,7 @@ import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +26,9 @@ public class DocumentService {
     DocumentRepository documentRepository;
 
     @Autowired
+    DocumentVersionService documentVersionService;
+
+    @Autowired
     S3Service s3Service;
 
     public Optional<Document> getDocumentById(Long id){
@@ -33,6 +38,7 @@ public class DocumentService {
         return documentRepository.findAll();
     }
 
+    @Transactional
     public Mono<Document> createDocument(CreateDocumentParam newCreateDocumentParam) {
         return Mono.just(newCreateDocumentParam)
                 .map(createDocumentParam->{
@@ -46,8 +52,19 @@ public class DocumentService {
                     return PathUrl;
                 })
                 .map(pathUrl ->{
-                    Document newDocument = newCreateDocumentParam.getDocument();
-                    newDocument.setDataUrl(pathUrl);
+                    // Document 생성
+                    Document document = newCreateDocumentParam.getDocument();
+                    document.setTitle(document.getTitle());
+                    Document newDocument = documentRepository.save(document);
+
+
+                    DocumentVersion newDocumentVersion = new DocumentVersion();
+                    newDocumentVersion.setCreatedAt(LocalDateTime.now());
+                    newDocumentVersion.setDataUrl(pathUrl);
+                    newDocumentVersion.setDocumentId(newDocument.getId());
+                    DocumentVersion savedDocumentVersion = documentVersionService.createDocumentVersion(newDocumentVersion);
+
+                    newDocument.setLastVersion(savedDocumentVersion);
                     return documentRepository.save(newDocument);
                 });
     }

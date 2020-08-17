@@ -46,8 +46,9 @@ public class DocumentController {
     }
 
     @PostMapping("/create")
+    @ApiOperation(value = "문서 작성", notes = "문서작성")
     public Mono<Document> createDocument(
-            @Valid @RequestBody CreateDocumentParam createDocumentParam
+            @ApiParam(value = "문서 작성 양식", required = true) @Valid @RequestBody CreateDocumentParam createDocumentParam
     ) {
         return documentService.createDocument(createDocumentParam);
     }
