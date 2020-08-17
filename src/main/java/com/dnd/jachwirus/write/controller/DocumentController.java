@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Api(value = "Document")
 @RestController
-@RequestMapping("/v1/api/document")
+@RequestMapping("/api/v1/document")
 @Slf4j
 @ResponseBody
 public class DocumentController {
