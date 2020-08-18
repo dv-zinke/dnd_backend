@@ -39,13 +39,6 @@ public class DocumentController {
         return documentService.getDocumentById(id);
     }
 
-    @PostMapping("/test")
-    public Document test(
-            @RequestBody Document document
-    ) {
-        return document;
-    }
-
     @PostMapping("/create")
     @ApiOperation(value = "문서 작성", notes = "문서작성")
     public Mono<Document> createDocument(
