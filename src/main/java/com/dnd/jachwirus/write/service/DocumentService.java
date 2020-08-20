@@ -42,16 +42,7 @@ public class DocumentService {
     @Transactional
     public Mono<Document> createDocument(CreateDocumentParam newCreateDocumentParam) {
         return Mono.just(newCreateDocumentParam)
-                .map(createDocumentParam->{
-                    InputStream is = new ByteArrayInputStream(createDocumentParam.getContent().getBytes());
-                    String PathUrl = null;
-                    try {
-                        PathUrl = s3Service.uploadContent(new UuidUtil().getUuid(),is);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return PathUrl;
-                })
+                .map(createDocumentParam -> getAwsS3Url(createDocumentParam.getContent()))
                 .map(pathUrl ->{
                     // Document 생성
                     Document document = newCreateDocumentParam.getDocument();
@@ -72,18 +63,8 @@ public class DocumentService {
 
     public Mono<Document> updateDocument(UpdateDocumentParam updateDocumentParam){
         return Mono.just(updateDocumentParam)
-                .map(updateDocument->{
-                    InputStream is = new ByteArrayInputStream(updateDocument.getContent().getBytes());
-                    String PathUrl = null;
-                    try {
-                        PathUrl = s3Service.uploadContent(new UuidUtil().getUuid(),is);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return PathUrl;
-                })
+                .map(updateDocument-> getAwsS3Url(updateDocument.getContent()))
                 .map(pathUrl ->{
-
                     DocumentVersion newDocumentVersion = new DocumentVersion();
                     newDocumentVersion.setCreatedAt(LocalDateTime.now());
                     newDocumentVersion.setDataUrl(pathUrl);
@@ -99,5 +80,16 @@ public class DocumentService {
                     }
                 });
 
+    }
+
+    String getAwsS3Url(String content){
+        InputStream is = new ByteArrayInputStream(content.getBytes());
+        String PathUrl = null;
+        try {
+            PathUrl = s3Service.uploadContent(new UuidUtil().getUuid(),is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return PathUrl;
     }
 }

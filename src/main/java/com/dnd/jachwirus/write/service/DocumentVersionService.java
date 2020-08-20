@@ -10,7 +10,7 @@ public class DocumentVersionService {
     @Autowired
     DocumentVersionRepository documentVersionRepository;
 
-    public DocumentVersion createDocumentVersion(DocumentVersion createDocumentVersion){
+    DocumentVersion createDocumentVersion(DocumentVersion createDocumentVersion){
         return documentVersionRepository.save(createDocumentVersion);
     }
 }

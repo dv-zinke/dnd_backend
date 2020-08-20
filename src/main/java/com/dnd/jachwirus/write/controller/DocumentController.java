@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
-import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
-@Api(value = "Document")
+@Api(value = "문서 Api")
 @RestController
 @RequestMapping("/api/v1/document")
 @Slf4j
@@ -30,6 +30,14 @@ public class DocumentController {
 
     @Autowired
     S3Service s3Service;
+
+    @GetMapping
+    @ApiOperation(value = "문서 전체 조회", notes = "문서 전체 조회")
+    public List<Document> getAllDocument(
+    ) {
+        return documentService.getAllDocument();
+    }
+
 
     @GetMapping("/{id}")
     @ApiOperation(value = "문서 조회", notes = "문서 아이디로 문서 조회")
@@ -51,7 +59,7 @@ public class DocumentController {
     @ApiOperation(value = "문서 수정", notes = "문서 수정")
     public Mono<Document> updateDocument(
             @ApiParam(value = "문서 수정 양식", required = true) @Valid @RequestBody UpdateDocumentParam updateDocumentParam
-            ) {
+    ) {
         return documentService.updateDocument(updateDocumentParam);
     }
 
