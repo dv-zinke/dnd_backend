@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://database-1.ccjf3fqhonka.us-east-2.rds.amazonaws.com:3306/dnd?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    username: admin
+    password: mypassword
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        default_batch_fetch_size: 1000
+server:
+  port: 9010
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIAJW4CMCXYDLOXMBUA
+      secretKey: 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
+    s3:
+      bucket: dnd-jachwirus
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
