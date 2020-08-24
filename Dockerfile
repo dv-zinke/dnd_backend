@@ -4,4 +4,4 @@ VOLUME /tmp
 EXPOSE 9010
 ARG JAR_FILE=build/libs/*.jar
 ADD ${JAR_FILE} write.jar
-ENTRYPOINT ["java","-jar","/write.jar"]
+ENTRYPOINT ["java","${JAVA_OPTS}","-jar","/write.jar"]
