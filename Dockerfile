@@ -1,4 +1,4 @@
-FROM java:8
+FROM openjdk:8-jdk-alpine
 LABEL maintanier="dv.zinke@gmail.com"
 VOLUME /tmp
 EXPOSE 9010
