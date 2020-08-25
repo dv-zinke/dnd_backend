@@ -36,3 +36,7 @@ out/
 ### resources ###
 src/main/resources/static/
 src/main/resources/templates/
+
+/src/main/resources/application.properties
+/src/main/resources/application.yml
+gradle.properties
