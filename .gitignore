@@ -36,7 +36,7 @@ out/
 ### resources ###
 src/main/resources/static/
 src/main/resources/templates/
-src/main/querydsl/*
+src/querydsl/*
 
 
 /src/main/resources/application.properties
