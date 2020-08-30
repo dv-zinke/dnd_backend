@@ -56,4 +56,14 @@ public class S3Service {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         return s3Client.getUrl(bucket, key).toString();
     }
+
+    public String uploadFile(String filename, MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+
+        String key = "thumbnail/"+fileName;
+
+        s3Client.putObject(new PutObjectRequest(bucket, key, file.getInputStream(), null)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+        return s3Client.getUrl(bucket, key).toString();
+    }
 }
