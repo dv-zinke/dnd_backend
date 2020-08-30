@@ -19,10 +19,15 @@ public class HashtagController {
     @Autowired
     HashtagService hashtagService;
 
-    @GetMapping
+    @GetMapping("/search")
     List<Hashtag> findAllByNameContain(
             @RequestParam String name
     ){
         return hashtagService.findAllByNameContain(name);
+    }
+
+    @GetMapping
+    List<Hashtag> findAll(){
+        return hashtagService.findAll();
     }
 }

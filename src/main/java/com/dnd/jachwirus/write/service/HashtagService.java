@@ -12,6 +12,10 @@ public class HashtagService {
     @Autowired
     HashtagRepository hashtagRepository;
 
+    public List<Hashtag> findAll(){
+        return hashtagRepository.findAll();
+    }
+
     public List<Hashtag> findAllByNameContain(String name){
         return hashtagRepository.findAllByNameContains(name);
     }
