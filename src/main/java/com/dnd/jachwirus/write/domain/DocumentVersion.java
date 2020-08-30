@@ -30,6 +30,12 @@ public class DocumentVersion {
 
     public LocalDateTime createdAt;
 
+    public Long contributer;
 
-
+    public DocumentVersion(Long documentId, String dataUrl, LocalDateTime createdAt, Long contributer) {
+        this.documentId = documentId;
+        this.dataUrl = dataUrl;
+        this.createdAt = createdAt;
+        this.contributer = contributer;
+    }
 }
