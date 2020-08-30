@@ -35,10 +35,7 @@ dependencies {
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
-    //Querydsl JPA Support
-    compile('com.querydsl:querydsl-jpa:4.2.2')
-    //Querydsl APT Support = 쿼리 타입 (Q) 을 생성할 때 필요한 라이브러리
-    compile('com.querydsl:querydsl-apt:4.2.2')
+
 }
 
 
@@ -62,25 +59,6 @@ sourceSets {
 }
 
 
-task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
-    file(new File(projectDir, "/src/main/generated")).deleteDir()
-    file(new File(projectDir, "/src/main/generated")).mkdirs()
-    source = sourceSets.main.java
-    classpath = configurations.compile + configurations.compileOnly
-    options.compilerArgs = [
-            "-proc:only",
-            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
-    ]
-    destinationDir = file('src/main/generated')
-}
-
-compileJava {
-    dependsOn generateQueryDSL
-}
-
-clean.doLast {
-    file(new File(projectDir, "/src/main/generated")).deleteDir()
-}
 
 // 실행방법
 // gradlew clean bootWar jibDockerBuild dockerLocalRun --stacktrace
