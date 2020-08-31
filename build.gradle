@@ -105,7 +105,7 @@ remotes {
 }
 
 //실행방법
-//gradlew clean bootWar jibBuildTar dockerTestRun --stacktrace
+//gradlew clean bootJar jibBuildTar dockerTestRun --stacktrace
 task dockerTestRun{
     doLast{
         ssh.run {

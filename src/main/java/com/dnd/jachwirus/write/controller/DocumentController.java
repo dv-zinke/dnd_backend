@@ -10,6 +10,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -45,6 +47,17 @@ public class DocumentController {
             @ApiParam(value = "문서 아이디", required = true, example = "1") @PathVariable Long id
     ) {
         return documentService.getDocumentById(id);
+    }
+
+    @GetMapping("/new")
+    public List<Document> getNewDocument() {
+
+        return documentService.getNewDocumentTop5(PageRequest.of(0,5));
+    }
+
+    @GetMapping("/best")
+    public List<Document> getBestDocument() {
+        return documentService.getBestDocumentTop5(PageRequest.of(0,5));
     }
 
     @PostMapping("/create")

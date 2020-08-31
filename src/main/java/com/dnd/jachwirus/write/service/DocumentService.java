@@ -11,6 +11,7 @@ import com.dnd.jachwirus.write.repository.DocumentRepository;
 import com.dnd.jachwirus.write.repository.HashtagRepository;
 import com.dnd.jachwirus.write.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
@@ -50,17 +51,24 @@ public class DocumentService {
         return documentRepository.findAll();
     }
 
+    public List<Document> getBestDocumentTop5(Pageable pageable) {
+        return documentRepository.findTop5ByOrOrderByLikeDisLikeDesc(pageable);
+    }
+
+    public List<Document> getNewDocumentTop5(Pageable pageable) {
+        return documentRepository.findTop5ByOrOrderByCreatedAtDesc(pageable);
+    }
+
     @Transactional
     public Mono<Document> createDocument(CreateDocumentParam newCreateDocumentParam) {
         return Mono.just(newCreateDocumentParam)
                 .map(createDocumentParam ->{
 
-                    String imagePath = getAwsS3UrlByString(createDocumentParam.getThumbnail());
                     String filePath = getAwsS3UrlByString(createDocumentParam.getContent());
                     // Document 생성
                     Document document = newCreateDocumentParam.getDocument();
-                    document.setThumbnailUrl(imagePath);
                     document.setTitle(document.getTitle());
+                    document.setCreatedAt(LocalDateTime.now());
                     Document newDocument = documentRepository.save(document);
 
 

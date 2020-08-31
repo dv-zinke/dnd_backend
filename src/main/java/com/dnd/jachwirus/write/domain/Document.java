@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -35,4 +36,6 @@ public class Document {
     public Long viewCount = 0L;
 
     public String category = null;
+
+    public LocalDateTime createdAt;
 }

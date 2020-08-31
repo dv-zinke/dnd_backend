@@ -20,7 +20,4 @@ public class UpdateDocumentParam {
 
     @Valid
     List<String> hashtags;
-
-    @Valid
-    MultipartFile thumbnail;
 }
