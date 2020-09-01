@@ -7,10 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -30,9 +27,11 @@ public class DocumentVersion {
 
     public LocalDateTime createdAt;
 
-    public Long contributer;
+    @OneToOne
+    @JoinColumn(name = "contributer")
+    public User contributer;
 
-    public DocumentVersion(Long documentId, String dataUrl, LocalDateTime createdAt, Long contributer) {
+    public DocumentVersion(Long documentId, String dataUrl, LocalDateTime createdAt, User contributer) {
         this.documentId = documentId;
         this.dataUrl = dataUrl;
         this.createdAt = createdAt;

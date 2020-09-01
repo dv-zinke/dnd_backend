@@ -20,4 +20,7 @@ public class UpdateDocumentParam {
 
     @Valid
     List<String> hashtags;
+
+    @Valid
+    String userId;
 }

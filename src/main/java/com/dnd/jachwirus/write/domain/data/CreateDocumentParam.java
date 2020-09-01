@@ -21,4 +21,6 @@ public class CreateDocumentParam {
     @Valid
     List<String> hashtags;
 
+    @Valid
+    String userId;
 }
