@@ -6,6 +6,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +23,11 @@ public class DocumentHashtagController {
 
     @GetMapping
     Page<DocumentHashtag> findAllByHashtagName(
-            Pageable pageable,
-            @RequestParam String HashtagName
+            @RequestParam String HashtagName,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "20") Integer size
     ){
-        return documentHashtagService.findDocumentHashtagByName(pageable, HashtagName);
+        return documentHashtagService.findDocumentHashtagByName(PageRequest.of(page, size), HashtagName);
     }
 
 }

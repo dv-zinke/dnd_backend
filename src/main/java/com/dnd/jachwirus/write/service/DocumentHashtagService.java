@@ -24,8 +24,6 @@ public class DocumentHashtagService {
     public Page<DocumentHashtag> findDocumentHashtagByName(Pageable page, String name) {
         Hashtag foundHashtag = hashtagRepository.findByName(name);
 
-        Page<DocumentHashtag> dd =documentHashtagSearchRepository.search(foundHashtag, page);
-
-        return dd;
+        return documentHashtagSearchRepository.search(foundHashtag, page);
     }
 }

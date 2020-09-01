@@ -1,9 +1,6 @@
 package com.dnd.jachwirus.write.repository;
 
-import com.dnd.jachwirus.write.domain.DocumentHashtag;
-import com.dnd.jachwirus.write.domain.Hashtag;
-import com.dnd.jachwirus.write.domain.QDocumentHashtag;
-import com.dnd.jachwirus.write.domain.QHashtag;
+import com.dnd.jachwirus.write.domain.*;
 import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,10 +29,11 @@ public class DocumentHashtagSearchRepository extends QuerydslRepositorySupport {
 
         QDocumentHashtag qDocumentHashtag = QDocumentHashtag.documentHashtag;
         QHashtag qHashtag = QHashtag.hashtag;
-        JPAQuery<DocumentHashtag> jpaQuery = new JPAQuery<>(em);
 
+        JPAQuery<DocumentHashtag> jpaQuery = new JPAQuery<>(em);
         jpaQuery.from(qDocumentHashtag)
                 .leftJoin(qDocumentHashtag.hashtag, qHashtag)
+
                 .fetchJoin()
                 .distinct();
 

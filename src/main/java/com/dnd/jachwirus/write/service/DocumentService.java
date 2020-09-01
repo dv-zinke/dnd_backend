@@ -76,6 +76,7 @@ public class DocumentService {
                     newDocumentVersion.setCreatedAt(LocalDateTime.now());
                     newDocumentVersion.setDataUrl(filePath);
                     newDocumentVersion.setDocumentId(newDocument.getId());
+                    
 
 
                     for(String hashtag : createDocumentParam.getHashtags()) {
