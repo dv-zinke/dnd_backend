@@ -8,26 +8,25 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@Table(name = "COMMENT")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "document_id")
-    @JsonIgnore
-    public Document documentId = null;
+    public Long documentId;
 
     public String content;
 
     public Boolean isModified;
 
-    public Timestamp createdAt;
+    public LocalDateTime createdAt;
 
     public Long userId;
 

@@ -1,11 +1,9 @@
 package com.dnd.jachwirus.write.service;
 
-import com.dnd.jachwirus.write.domain.Document;
-import com.dnd.jachwirus.write.domain.DocumentHashtag;
-import com.dnd.jachwirus.write.domain.DocumentVersion;
-import com.dnd.jachwirus.write.domain.Hashtag;
+import com.dnd.jachwirus.write.domain.*;
 import com.dnd.jachwirus.write.domain.data.CreateDocumentParam;
 import com.dnd.jachwirus.write.domain.data.UpdateDocumentParam;
+import com.dnd.jachwirus.write.endpoint.UserEndpoint;
 import com.dnd.jachwirus.write.repository.DocumentHashtagRepository;
 import com.dnd.jachwirus.write.repository.DocumentRepository;
 import com.dnd.jachwirus.write.repository.HashtagRepository;
@@ -44,6 +42,9 @@ public class DocumentService {
     @Autowired
     HashtagRepository hashtagRepository;
 
+    @Autowired
+    UserEndpoint userEndpoint;
+
     public Optional<Document> getDocumentById(Long id){
         return documentRepository.findById(id);
     }
@@ -61,9 +62,14 @@ public class DocumentService {
 
     @Transactional
     public Mono<Document> createDocument(CreateDocumentParam newCreateDocumentParam) {
-        return Mono.just(newCreateDocumentParam)
-                .map(createDocumentParam ->{
 
+        Mono<User> userMono = Mono.just(newCreateDocumentParam)
+                .flatMap(param -> userEndpoint.getUser(param.getUserId()));
+
+        return Mono.zip(userMono,Mono.just(newCreateDocumentParam))
+                .map(data ->{
+                    User user = data.getT1();
+                    CreateDocumentParam createDocumentParam = data.getT2();
                     String filePath = getAwsS3UrlByString(createDocumentParam.getContent());
                     // Document 생성
                     Document document = newCreateDocumentParam.getDocument();
@@ -76,7 +82,8 @@ public class DocumentService {
                     newDocumentVersion.setCreatedAt(LocalDateTime.now());
                     newDocumentVersion.setDataUrl(filePath);
                     newDocumentVersion.setDocumentId(newDocument.getId());
-                    
+                    newDocumentVersion.setContributer(user);
+
 
 
                     for(String hashtag : createDocumentParam.getHashtags()) {

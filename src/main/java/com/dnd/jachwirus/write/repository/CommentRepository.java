@@ -12,4 +12,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Query("select c from Comment c")
     Page<Comment> findAll(Pageable pageable);
+
+    Page<Comment> findByDocumentId(Pageable pageable, Long documentId);
+
+
+
 }
