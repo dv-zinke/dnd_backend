@@ -26,5 +26,7 @@ public class User {
 
     public String avatarImageUrl;
 
+    public String avatarColor;
+
     public Long level;
 }

@@ -18,8 +18,5 @@ public class UpdateDocumentParam {
     @Valid
     String content;
 
-    @Valid
-    List<String> hashtags;
-
     Long userId;
 }

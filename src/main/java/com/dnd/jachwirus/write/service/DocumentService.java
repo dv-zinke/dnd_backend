@@ -109,14 +109,21 @@ public class DocumentService {
                 });
     }
 
-    public Mono<Document> updateDocument(UpdateDocumentParam updateDocumentParam){
-        return Mono.just(updateDocumentParam)
-                .map(updateDocument-> getAwsS3UrlByString(updateDocument.getContent()))
-                .map(pathUrl ->{
+    public Mono<Document> updateDocument(UpdateDocumentParam newUpdateDocumentParam){
+        Mono<User> userMono = Mono.just(newUpdateDocumentParam)
+                .flatMap(param -> userEndpoint.getUser(param.getUserId()));
+
+        return Mono.zip(userMono, Mono.just(newUpdateDocumentParam))
+                .map(data ->{
+                    User user = data.getT1();
+                    UpdateDocumentParam updateDocumentParam = data.getT2();
+                    String filePath = getAwsS3UrlByString(updateDocumentParam.getContent());
+
                     DocumentVersion newDocumentVersion = new DocumentVersion();
                     newDocumentVersion.setCreatedAt(LocalDateTime.now());
-                    newDocumentVersion.setDataUrl(pathUrl);
+                    newDocumentVersion.setDataUrl(filePath);
                     newDocumentVersion.setDocumentId(updateDocumentParam.getDocumentId());
+                    newDocumentVersion.setContributer(user);
                     DocumentVersion savedDocumentVersion = documentVersionService.createDocumentVersion(newDocumentVersion);
 
                     Optional<Document> originalDocument = documentRepository.findById(updateDocumentParam.getDocumentId());

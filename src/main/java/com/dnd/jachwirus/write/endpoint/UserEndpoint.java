@@ -15,7 +15,7 @@ public class UserEndpoint {
     public Mono<User> getUser(Long userId) {
         return WebClient.create()
                 .get()
-                .uri("http://localhost:9020/find?userId=" + userId)
+                .uri("http://ec2-13-58-81-87.us-east-2.compute.amazonaws.com:9020/find?userId=" + userId)
                 .retrieve()
                 .bodyToMono(User.class)
                 .switchIfEmpty(Mono.error(new RestException(HttpStatus.NOT_FOUND, "User is not exist")));

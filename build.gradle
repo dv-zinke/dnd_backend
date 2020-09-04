@@ -86,7 +86,7 @@ test {
 task dockerLocalRun(){
     doLast{
         def imageName = "${project.name}:${project.version}"
-        def containerName = "write"
+        def containerName = "write-"
         println('\n도커 빌드 완료1')
         exec{ commandLine "docker stop ${containerName}".split(' ') }
         exec{ commandLine "docker rm ${containerName}".split(' ') }
@@ -112,7 +112,7 @@ task dockerTestRun{
             session(remotes.test) {
                 def command
                 def imageName = "${project.name}:${project.version}"
-                def containerName = 'write'
+                def containerName = 'write-v3'
                 def host = project.properties["dockerHost"]
                 def buildPath = fileTree(dir: 'build').getDir()
                 def tarName = "jib-image.tar"

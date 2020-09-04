@@ -24,7 +24,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/document")
 @Slf4j
 @ResponseBody
-@CrossOrigin(value = "*")
+@CrossOrigin
 public class DocumentController {
 
     @Autowired
