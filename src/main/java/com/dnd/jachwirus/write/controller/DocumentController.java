@@ -3,6 +3,7 @@ package com.dnd.jachwirus.write.controller;
 import com.dnd.jachwirus.write.domain.Document;
 import com.dnd.jachwirus.write.domain.data.CreateDocumentParam;
 import com.dnd.jachwirus.write.domain.data.UpdateDocumentParam;
+import com.dnd.jachwirus.write.exception.RestException;
 import com.dnd.jachwirus.write.service.DocumentService;
 import com.dnd.jachwirus.write.service.S3Service;
 import io.swagger.annotations.Api;
@@ -74,6 +75,20 @@ public class DocumentController {
             @ApiParam(value = "문서 수정 양식", required = true) @Valid @RequestBody UpdateDocumentParam updateDocumentParam
     ) {
         return documentService.updateDocument(updateDocumentParam);
+    }
+
+    @PostMapping("/like/{documentId}")
+    public Document likeDocument(
+            @PathVariable Long documentId
+    ) throws RestException {
+        return documentService.likePlusDocument(documentId);
+    }
+
+    @PostMapping("/dislike/{documentId}")
+    public Document disLikeDocument(
+            @PathVariable Long documentId
+    ) throws RestException {
+        return documentService.likeMinusDocument(documentId);
     }
 
 }

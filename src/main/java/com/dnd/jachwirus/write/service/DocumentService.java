@@ -4,17 +4,18 @@ import com.dnd.jachwirus.write.domain.*;
 import com.dnd.jachwirus.write.domain.data.CreateDocumentParam;
 import com.dnd.jachwirus.write.domain.data.UpdateDocumentParam;
 import com.dnd.jachwirus.write.endpoint.UserEndpoint;
+import com.dnd.jachwirus.write.exception.RestException;
 import com.dnd.jachwirus.write.repository.DocumentHashtagRepository;
 import com.dnd.jachwirus.write.repository.DocumentRepository;
 import com.dnd.jachwirus.write.repository.HashtagRepository;
 import com.dnd.jachwirus.write.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
-import javax.print.Doc;
 import javax.transaction.Transactional;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -135,6 +136,29 @@ public class DocumentService {
                     }
                 });
 
+    }
+
+    public Document likePlusDocument(Long documentId) throws RestException {
+
+        Optional<Document> foundDocument = documentRepository.findById(documentId);
+
+        if(foundDocument.isPresent()) {
+            foundDocument.get().setLike(foundDocument.get().getLike() + 1);
+            return documentRepository.save(foundDocument.get());
+        }else {
+            throw new RestException(HttpStatus.NOT_FOUND, "Document is not exist");
+        }
+    }
+
+    public Document likeMinusDocument(Long documentId) throws RestException {
+        Optional<Document> foundDocument = documentRepository.findById(documentId);
+
+        if(foundDocument.isPresent()) {
+            foundDocument.get().setLike(foundDocument.get().getLike() - 1);
+            return documentRepository.save(foundDocument.get());
+        }else {
+            throw new RestException(HttpStatus.NOT_FOUND, "Document is not exist");
+        }
     }
 
     String getAwsS3UrlByString(String content){
