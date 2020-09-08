@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface DocumentVersionRepository extends JpaRepository<DocumentVersion, Long> {
 
-    Page<DocumentVersion> findByDocumentId(Pageable pageable, Long documentId);
+    Page<DocumentVersion> findByDocumentIdOrderByCreatedAtDesc(Pageable pageable, Long documentId);
 }

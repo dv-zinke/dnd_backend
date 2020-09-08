@@ -41,6 +41,7 @@ public class DocumentHashtagSearchRepository extends QuerydslRepositorySupport {
 
         List<DocumentHashtag> documentHashtagList = jpaQuery
                 .offset(pageable.getOffset())
+                .orderBy(qDocumentHashtag.document.createdAt.desc())
                 .limit(pageable.getPageSize())
                 .fetchAll()
                 .fetch();

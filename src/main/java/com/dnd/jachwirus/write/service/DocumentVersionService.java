@@ -20,6 +20,6 @@ public class DocumentVersionService {
     }
 
     public Page<DocumentVersion> findAllByDocumentId(Pageable page, Long documentId) {
-        return documentVersionRepository.findByDocumentId(page, documentId);
+        return documentVersionRepository.findByDocumentIdOrderByCreatedAtDesc(page, documentId);
     }
 }
